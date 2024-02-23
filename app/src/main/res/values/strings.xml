@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">projet_android</string>
+    <string name="pencil">Pencil</string>
+    <string name="wand">Wand</string>
+    <string name="crop">Crop</string>
+    <string name="rotate">Rotate</string>
+    <string name="erase">Erase</string>
+    <string name="file">File</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    <string name="save">Save</string>
+    <string name="open_files">Open files</string>
+    <string name="undo_action">Undo Action</string>
+    <string name="redo_action">Redo action</string>
+    <string name="save_image">Save Image</string>
+    <string name="editing_image">Editing Image</string>
 </resources>

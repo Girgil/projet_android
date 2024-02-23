@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">projet_android</string>
+    <string name="pencil">Pinceau</string>
+    <string name="wand">Baguette</string>
+    <string name="crop">Recadrer</string>
+    <string name="rotate">Pivoter</string>
+    <string name="erase">Gommer</string>
+    <string name="file">Fichier</string>
+    <string name="undo">Retour</string>
+    <string name="redo">Revenir</string>
+    <string name="save">Sauvegarder</string>
+    <string name="open_files">Ouvrir les fichiers</string>
+    <string name="undo_action">Annuler l\\\'action</string>
+    <string name="redo_action">Refaire l\\\'action</string>
+    <string name="save_image">Sauvegarder l\'image</string>
+    <string name="editing_image">Image editée</string>
+</resources>
