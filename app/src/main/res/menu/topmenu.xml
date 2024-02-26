@@ -7,6 +7,7 @@
         android:layout_height="wrap_content"
         android:enabled="true"
         android:icon="@drawable/dossier"
+        android:onClick="imageChooser"
         android:title="@string/file" />
     <item
         android:id="@+id/undo"
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:enabled="true"
         android:icon="@drawable/undo"
+        android:onClick="annuler"
         android:title="@string/undo" />
     <item
         android:id="@+id/redo"
@@ -21,6 +23,7 @@
         android:layout_height="wrap_content"
         android:enabled="true"
         android:icon="@drawable/redo"
+        android:onClick="retablir"
         android:title="@string/redo" />
     <item
         android:id="@+id/save"

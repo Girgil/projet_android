@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">projet_android</string>
+    <string name="app_name" translatable="false">Imagor2000</string>
     <string name="pencil">Pencil</string>
     <string name="wand">Wand</string>
     <string name="crop">Crop</string>

@@ -36,5 +36,6 @@
         android:layout_height="wrap_content"
         android:enabled="true"
         android:icon="@drawable/rotation"
+        android:onClick="rotate"
         android:title="@string/rotate" />
 </menu>
