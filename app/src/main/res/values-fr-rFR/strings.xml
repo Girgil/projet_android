@@ -15,4 +15,5 @@
     <string name="redo_action">Refaire l\\\'action</string>
     <string name="save_image">Sauvegarder l\'image</string>
     <string name="editing_image">Image editée</string>
+    <string name="hand">Main</string>
 </resources>
