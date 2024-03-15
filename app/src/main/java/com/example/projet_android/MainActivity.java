@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projet_android.commandes.GestionnaireCommande;
 import com.example.projet_android.commandes.Pivoter;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,21 +19,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setOnItemSelectedListener(item -> {
-            item.setChecked(true);
-            Log.d("Mes logs", "clique sur " + item.getTitle());
-
-            return false;
-        });
-
-//        BottomNavigationView topNav = findViewById(R.id.topNav);
     }
 
-    public void imageChooser(MenuItem item) {
+    public void imageChooser(View view) {
 
-        item.setChecked(true);
+//        item.setChecked(true);
 
         // create an instance of the
         // intent of the type image
@@ -69,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void rotate(MenuItem item) {
-        item.setChecked(true);
+    public void rotate(View view) {
+//        item.setChecked(true);
         View img = findViewById(R.id.imageView);
         Pivoter pivoter = new Pivoter(img);
         pivoter.executer();
@@ -79,15 +67,15 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Mes logs", GestionnaireCommande.getInstance().toString());
     }
 
-    public void annuler(MenuItem item) {
-        item.setChecked(true);
+    public void annuler(View view) {
+//        item.setChecked(true);
         GestionnaireCommande.getInstance().undoLastCommand();
         Log.d("Mes logs", "Annulation");
         Log.d("Mes logs", GestionnaireCommande.getInstance().toString());
     }
 
-    public void retablir(MenuItem item) {
-        item.setChecked(true);
+    public void retablir(View view) {
+//        item.setChecked(true);
         GestionnaireCommande.getInstance().redoCommand();
         Log.d("Mes logs", "Retablissement");
         Log.d("Mes logs", GestionnaireCommande.getInstance().toString());

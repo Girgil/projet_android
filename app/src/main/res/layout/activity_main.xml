@@ -7,8 +7,8 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:orientation="vertical"
@@ -17,30 +17,122 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/topNav"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/custom_black"
-            app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/topmenu" />
+            android:layout_height="15dp"
+            android:layout_weight="5"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/file"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:enabled="true"
+                android:src="@drawable/dossier"
+                android:onClick="imageChooser"
+                android:contentDescription="@string/file" />
+            <ImageButton
+                android:id="@+id/undo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:enabled="true"
+                android:src="@drawable/undo"
+                android:onClick="annuler"
+                android:contentDescription="@string/undo" />
+            <ImageButton
+                android:id="@+id/redo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:enabled="true"
+                android:src="@drawable/redo"
+                android:onClick="retablir"
+                android:contentDescription="@string/redo" />
+            <ImageButton
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:enabled="true"
+                android:src="@drawable/save"
+                android:contentDescription="@string/save" />
+            
+        </LinearLayout>
 
         <com.example.projet_android.MainImage
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9"
+            android:layout_weight="90"
             android:contentDescription="@string/editing_image"
             android:scaleType="centerCrop"
             android:src="@drawable/image_default" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNav"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/custom_black"
-            app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/bottommenu" />
+            android:layout_height="15dp"
+            android:layout_weight="5"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/hand"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:enabled="true"
+                android:src="@drawable/main"
+                android:contentDescription="@string/hand" />
+
+            <ImageButton
+                android:id="@+id/pen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:checked="true"
+                android:enabled="true"
+                android:src="@drawable/crayon"
+                android:contentDescription="@string/pencil" />
+
+            <ImageButton
+                android:id="@+id/wand"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:enabled="true"
+                android:src="@drawable/baguette"
+                android:contentDescription="@string/wand" />
+
+            <ImageButton
+                android:id="@+id/crop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/crop"
+                android:enabled="true"
+                android:src="@drawable/recadrer" />
+
+            <ImageButton
+                android:id="@+id/rotate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="20"
+                android:scaleType="fitCenter"
+                android:enabled="true"
+                android:src="@drawable/rotation"
+                android:onClick="rotate"
+                android:contentDescription="@string/rotate" />
+        </LinearLayout>
+
 
     </LinearLayout>
 
