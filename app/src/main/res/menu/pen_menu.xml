@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/pen_size_small"
+            android:title="@string/pen_size_small" />
+        <item
+            android:id="@+id/pen_size_medium"
+            android:title="@string/pen_size_medium" />
+        <item
+            android:id="@+id/pen_size_large"
+            android:title="@string/pen_size_large" />
+    </group>
+    <SeekBar
+        android:id="@+id/colorSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:max="100"
+        android:progress="0" />
+
+    <!-- Ajoutez des boutons pour la sélection de la saturation et de la luminosité -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/saturationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Saturation" />
+
+        <Button
+            android:id="@+id/brightnessButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Brightness" />
+    </LinearLayout>
+</menu>
