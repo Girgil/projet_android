@@ -1,9 +1,12 @@
 package com.example.projet_android;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.SeekBar;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projet_android.commandes.GestionnaireCommande;
@@ -147,5 +151,26 @@ public class MainActivity extends AppCompatActivity {
         imageView.setOnTouchListener(null);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state.
+        savedInstanceState.putParcelable("mainImage", ((BitmapDrawable) this.mainImage.getDrawable()).getBitmap());
+        float rota = this.mainImage.getRotation();
+        savedInstanceState.putFloat("rotation", rota);
+        // Always call the superclass so it can save the view hierarchy state.
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy.
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance.
+        Bitmap img = savedInstanceState.getParcelable("mainImage");
+        float rota = savedInstanceState.getFloat("rotation");
+        this.mainImage.setImageBitmap(img);
+        this.mainImage.changeRotation('+', (int) rota);
+    }
 
 }
