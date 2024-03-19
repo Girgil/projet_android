@@ -53,7 +53,6 @@
                 android:src="@drawable/redo"
                 android:onClick="retablir"
                 android:contentDescription="@string/redo" />
-
             <ImageButton
                 android:id="@+id/save"
                 android:layout_width="match_parent"
@@ -64,7 +63,6 @@
                 android:onClick="enregistrer"
                 android:scaleType="fitCenter"
                 android:src="@drawable/save" />
-            
         </LinearLayout>
 
         <com.example.projet_android.MainImage

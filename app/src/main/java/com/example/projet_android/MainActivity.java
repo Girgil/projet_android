@@ -1,31 +1,27 @@
 package com.example.projet_android;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Path;
 import android.graphics.PorterDuff;
-import android.net.Uri;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
-import android.graphics.PorterDuffColorFilter;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
 
 import com.example.projet_android.commandes.GestionnaireCommande;
 import com.example.projet_android.commandes.Pivoter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int SELECT_PICTURE = 200;
     private ImageButton penButton;
     private SeekBar colorSeekBar;
     private RadioGroup radioGroup;
@@ -79,64 +75,59 @@ public class MainActivity extends AppCompatActivity {
         return Color.HSVToColor(hsv);
     }
 
+    // Registers a photo picker activity launcher in single-select mode.
+    ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                // Callback is invoked after the user selects a media item or closes the
+                // photo picker.
+                if (uri != null) {
+                    MainImage imgView = findViewById(R.id.imageView);
+                    imgView.setRotation(0);
+                    imgView.setImageURI(uri);
+                    Log.d("Mes logs", uri.toString());
+                } else {
+                    Log.d("Mes logs", "No media selected");
+                }
+            });
+
     public void imageChooser(View view) {
 
-//        item.setChecked(true);
-
+        view.setPressed(true);
         // create an instance of the
         // intent of the type image
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
-
-        // pass the constant to compare it
-        // with the returned requestCode
-        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
-    }
-
-    // this function is triggered when user
-    // selects the image from the imageChooser
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-
-            // compare the resultCode with the
-            // SELECT_PICTURE constant
-            if (requestCode == SELECT_PICTURE) {
-                // Get the url of the image from data
-                Uri selectedImageUri = data.getData();
-                if (null != selectedImageUri) {
-                    // update the preview image in the layout
-                    MainImage imgView = findViewById(R.id.imageView);
-                    imgView.setImageURI(selectedImageUri);
-                }
-            }
-        }
+        pickMedia.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
     }
 
     public void rotate(View view) {
-//        item.setChecked(true);
-        View img = findViewById(R.id.imageView);
+        view.setPressed(true);
+        MainImage img = findViewById(R.id.imageView);
         Pivoter pivoter = new Pivoter(img);
         pivoter.executer();
         GestionnaireCommande.getInstance().addCommande(pivoter);
-        Log.d("Mes logs", "Rotation droite");
         Log.d("Mes logs", GestionnaireCommande.getInstance().toString());
     }
 
     public void annuler(View view) {
 //        item.setChecked(true);
         GestionnaireCommande.getInstance().undoLastCommand();
-        Log.d("Mes logs", "Annulation");
         Log.d("Mes logs", GestionnaireCommande.getInstance().toString());
     }
 
     public void retablir(View view) {
 //        item.setChecked(true);
+        view.setPressed(true);
         GestionnaireCommande.getInstance().redoCommand();
-        Log.d("Mes logs", "Retablissement");
         Log.d("Mes logs", GestionnaireCommande.getInstance().toString());
+    }
+
+    public void enregistrer(View view) {
+        MainImage img = findViewById(R.id.imageView);
+        img.save();
     }
 
     public void showPenMenu(View view){

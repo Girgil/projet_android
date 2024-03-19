@@ -1,23 +1,27 @@
 package com.example.projet_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.ImageView;
-import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
+import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class MainImage extends AppCompatImageView {
     private Path drawingPath;
@@ -25,6 +29,8 @@ public class MainImage extends AppCompatImageView {
     private int penColor = Color.RED;
     private int penWidth = 10;
     private boolean drawingEnabled = false;
+
+    private final Matrix matrix = new Matrix();
 
     public MainImage(Context context) {
         super(context);
@@ -37,6 +43,39 @@ public class MainImage extends AppCompatImageView {
 
     public MainImage(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void changeRotation(char signe, int degree) {
+        float rota = this.getRotation();
+        if (signe == '+') rota += degree; else rota -= degree;
+        this.setRotation(rota);
+        matrix.setRotate(rota);
+    }
+
+    public void save() {
+        Bitmap bitmapImage = ((BitmapDrawable) this.getDrawable()).getBitmap();
+        Bitmap newBit = Bitmap.createBitmap(bitmapImage, 0, 0, bitmapImage.getWidth(), bitmapImage.getHeight(), this.matrix, true);
+
+        String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        File file = new File(directory, "image_tournee.jpg");
+
+        try {
+            // Enregistrer l'image tournée dans le fichier.
+            FileOutputStream out = new FileOutputStream(file);
+            newBit.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+
+            // Actualiser la galerie pour afficher la nouvelle image.
+            MediaScannerConnection.scanFile(this.getContext(),
+                    new String[]{file.toString()}, null,
+                    (path, uri) -> {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupDrawing() {
@@ -52,6 +91,7 @@ public class MainImage extends AppCompatImageView {
             canvas.drawPath(drawingPath, drawPaint);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         this.setDrawingCacheEnabled(true);
@@ -86,10 +126,7 @@ public class MainImage extends AppCompatImageView {
     }
 
     public void switchDrawingMode(){
-        if(this.drawingEnabled)
-            this.drawingEnabled = false;
-        else
-            this.drawingEnabled = true;
+        this.drawingEnabled = !this.drawingEnabled;
     }
 
     public int getPenColor() {
