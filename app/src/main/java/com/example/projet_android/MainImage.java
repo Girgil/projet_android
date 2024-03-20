@@ -15,23 +15,27 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.example.projet_android.commandes.Dessiner;
-import com.example.projet_android.commandes.GestionnaireCommande;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+
+import com.example.projet_android.commandes.CommandManager;
+import com.example.projet_android.commandes.SaveImage;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainImage extends AppCompatImageView {
+
+    private static Bitmap DEFAULT_BITMAP;
+
     private Path drawingPath;
     private Paint drawPaint;
     private int penColor = Color.RED;
     private int penWidth = 10;
     private boolean drawingEnabled = false;
+    private SaveImage currentDraw;
 
     private final Matrix matrix = new Matrix();
 
@@ -42,6 +46,7 @@ public class MainImage extends AppCompatImageView {
     public MainImage(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setupDrawing();
+        DEFAULT_BITMAP = ((BitmapDrawable) this.getDrawable()).getBitmap();
     }
 
     public MainImage(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -53,6 +58,11 @@ public class MainImage extends AppCompatImageView {
         if (signe == '+') rota += degree; else rota -= degree;
         this.setRotation(rota);
         matrix.setRotate(rota);
+    }
+
+    public void resetRotation() {
+        this.setRotation(0);
+        matrix.setRotate(0);
     }
 
     public void save() {
@@ -87,6 +97,14 @@ public class MainImage extends AppCompatImageView {
         drawPaint.setStyle(Paint.Style.STROKE);
     }
 
+    public void setDefaultBitmap() {
+        this.setImageBitmap(DEFAULT_BITMAP);
+    }
+
+    public void changeDefaultBitmap(Bitmap bitmap) {
+        DEFAULT_BITMAP = bitmap;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -103,79 +121,47 @@ public class MainImage extends AppCompatImageView {
         this.setDrawingCacheEnabled(false);
         float x = event.getX();
         float y = event.getY();
-        drawPaint.setColor(getPenColor());
-        drawPaint.setStrokeWidth(getPenWidth());
+        drawPaint.setColor(this.penColor);
+        drawPaint.setStrokeWidth(this.penWidth);
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                // Début du tracé, déplacer le Path vers le point de contact
+                // On appuie sur l'image : on ne dessine pas, on bouge juste le curseur
                 drawingPath.moveTo(x, y);
+                // On réinitialise le dessin
+                this.currentDraw = null;
                 break;
             case MotionEvent.ACTION_MOVE:
-                // Ajouter le point de contact au Path
+                // On commence à dessiner
+                if (this.currentDraw == null)
+                    this.currentDraw = new SaveImage(this);
                 drawingPath.lineTo(x, y);
                 break;
+
             case MotionEvent.ACTION_UP:
-                // Rien à faire à la fin du tracé
+                // Quand on lève le doigt de l'écran : fin du dessin
                 drawingPath.reset();
-                Dessiner dessin = new Dessiner();
-                dessin.executer(this);
-                GestionnaireCommande.getInstance().addCommande(dessin);
+                if (this.currentDraw != null) {
+                    this.currentDraw.execute(this);
+                    CommandManager.getInstance().addCommand(this.currentDraw);
+                }
                 break;
         }
 
-        // Forcer la répétition de la méthode onDraw pour mettre à jour l'affichage
-        //invalidate();
+        // On met à jour le bitmap de l'imageview
         this.setImageBitmap(bitmap);
-
         return true; // Indiquer que l'événement de toucher est consommé
-    }
-
-    public void switchDrawingMode(){
-        this.drawingEnabled = !this.drawingEnabled;
     }
 
     public void setDrawingMode(boolean bool){
         this.drawingEnabled = bool;
     }
 
-    public int getPenColor() {
-        return this.penColor;
-    }
-
     public void setPenColor(int penColor){
         this.penColor = penColor;
     }
-
-    public int getPenWidth(){
-        return this.penWidth;
-    }
-
     public void setPenWidth(int penWidth){
         this.penWidth = penWidth;
-    }
-    public Memento sauvegarder(){
-        this.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(this.getDrawingCache());
-        this.setDrawingCacheEnabled(false);
-        this.setImageBitmap(bitmap);
-        return new Memento(bitmap);
-    }
-    public void restaurer(Memento memento){
-        //return memento.getImage();
-        Log.d("Mes Logs", "Restaurer");
-        this.setImageBitmap(memento.getImage());
-    }
-    public class Memento{
-        private Bitmap image;
-        public Memento(Bitmap image){
-            Log.d("Mes Logs", "Création memento");
-            this.image = image;
-        }
-
-        public Bitmap getImage() {
-            return this.image;
-        }
     }
 }
 

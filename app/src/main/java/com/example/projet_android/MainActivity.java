@@ -1,7 +1,5 @@
 package com.example.projet_android;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -9,24 +7,20 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.projet_android.commandes.GestionnaireCommande;
-import com.example.projet_android.commandes.Pivoter;
+import com.example.projet_android.commandes.ImagePicker;
 
 public class MainActivity extends AppCompatActivity {
 
     private MainImage mainImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 mainImage.setPenWidth(15);
         });
 
+        ImagePicker imagePicker = new ImagePicker(this, mainImage);
         ImageButton openFilesBtn = findViewById(R.id.file);
-        openFilesBtn.setOnClickListener((view) -> mainController.clickOpenFiles((ImageButton) view, pickMedia));
+        openFilesBtn.setOnClickListener((view) -> mainController.clickOpenFiles(imagePicker));
 
         ImageButton undoBtn = findViewById(R.id.undo);
         undoBtn.setOnClickListener((view) -> mainController.clickUndo(mainImage));
@@ -80,13 +75,16 @@ public class MainActivity extends AppCompatActivity {
 
         View pencilMenu = findViewById(R.id.pen_menu);
         ImageButton handBtn = findViewById(R.id.hand);
-        handBtn.setOnClickListener((view) -> mainController.clickHand(mainImage, (ImageButton) view, pencilMenu));
+        handBtn.setOnClickListener((view) -> mainController.clickHand(mainImage, handBtn, pencilMenu));
 
         ImageButton pencilBtn = findViewById(R.id.pen);
-        pencilBtn.setOnClickListener((view) -> mainController.clickPencil(mainImage, (ImageButton) view, pencilMenu));
+        pencilBtn.setOnClickListener((view) -> mainController.clickPencil(mainImage, pencilMenu));
 
         ImageButton rotateBtn = findViewById(R.id.rotate);
-        rotateBtn.setOnClickListener((view) -> mainController.clickRotation(mainImage, (ImageButton) view));
+        rotateBtn.setOnClickListener((view) -> mainController.clickRotation(mainImage));
+
+        ImageButton eraseBtn = findViewById(R.id.eraser);
+        eraseBtn.setOnClickListener(view -> mainController.clickEraser(mainImage));
     }
 
     private int getColorFromSeekBar(int progress) {
@@ -94,38 +92,17 @@ public class MainActivity extends AppCompatActivity {
         return Color.HSVToColor(hsv);
     }
 
-    // Registers a photo picker activity launcher in single-select mode.
-    ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
-            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                // Callback is invoked after the user selects a media item or closes the
-                // photo picker.
-                if (uri != null) {
-                    MainImage imgView = findViewById(R.id.imageView);
-                    imgView.setRotation(0);
-                    imgView.setImageURI(uri);
-                    Log.d("Mes logs", uri.toString());
-                } else {
-                    Log.d("Mes logs", "No media selected");
-                }
-            });
-
-
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current game state.
         savedInstanceState.putParcelable("mainImage", ((BitmapDrawable) this.mainImage.getDrawable()).getBitmap());
         float rota = this.mainImage.getRotation();
         savedInstanceState.putFloat("rotation", rota);
-        // Always call the superclass so it can save the view hierarchy state.
         super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
     public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        // Always call the superclass so it can restore the view hierarchy.
         super.onRestoreInstanceState(savedInstanceState);
-
-        // Restore state members from saved instance.
         Bitmap img = savedInstanceState.getParcelable("mainImage");
         float rota = savedInstanceState.getFloat("rotation");
         this.mainImage.setImageBitmap(img);
