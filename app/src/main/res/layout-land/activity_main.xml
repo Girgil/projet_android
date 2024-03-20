@@ -6,21 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
 
         <LinearLayout
-            android:layout_width="15dp"
+            android:id="@+id/top_menu"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_alignParentStart="true"
             android:orientation="vertical">
 
             <ImageButton
@@ -67,23 +64,30 @@
 
         <com.example.projet_android.MainImage
             android:id="@+id/imageView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="90"
             android:contentDescription="@string/editing_image"
             android:scaleType="fitCenter"
-            android:src="@drawable/image_default" />
+            android:src="@drawable/image_default"
+            android:layout_toEndOf="@id/top_menu"
+            android:layout_toStartOf="@id/pen_menu"/>
 
         <LinearLayout
             android:id="@+id/pen_menu"
-            android:layout_width="20dp"
+            android:layout_width="55dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:gravity="top"
+            android:layout_toStartOf="@id/drawing_tools"
+            android:gravity="top|end"
             android:orientation="vertical"
-            android:visibility="invisible"
-            tools:visibility="invisible">
+            android:visibility="visible">
 
+
+            <ImageButton
+                android:id="@+id/eraser"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/gomme" />
 
             <RadioGroup
                 android:id="@+id/pen_size_group"
@@ -113,34 +117,27 @@
                     android:id="@+id/pen_size_large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layoutDirection="ltr"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
                     android:scaleX="1.3"
                     android:scaleY="1.3"
-                    android:text=""
                     android:title="@string/pen_size_large" />
             </RadioGroup>
 
             <android.widget.VerticalSeekBar
                 android:id="@+id/colorSeekBar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="180dp"
                 android:max="100"
                 android:progress="0" />
-
-            <ImageButton
-                android:id="@+id/eraser"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:onClick="eraserMode"
-                android:scaleType="fitCenter"
-                android:src="@drawable/gomme" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="15dp"
+            android:id="@+id/drawing_tools"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_alignParentEnd="true"
             android:orientation="vertical">
 
             <ImageButton
@@ -196,6 +193,6 @@
         </LinearLayout>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -135,6 +135,10 @@ public class MainImage extends AppCompatImageView {
         this.drawingEnabled = !this.drawingEnabled;
     }
 
+    public void setDrawingMode(boolean bool){
+        this.drawingEnabled = bool;
+    }
+
     public int getPenColor() {
         return this.penColor;
     }

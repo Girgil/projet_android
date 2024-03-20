@@ -1,7 +1,9 @@
 package com.example.projet_android;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -38,24 +40,34 @@ public class MainController {
         img.save();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void clickHand(MainImage img, ImageButton view, View penMenu) {
         view.setSelected(!view.isSelected());
         view.setColorFilter(Color.GREEN);
         if (penMenu.getVisibility() == View.VISIBLE) {
             penMenu.setVisibility(View.INVISIBLE);
-            img.switchDrawingMode();
+            img.setDrawingMode(false);
         }
+        HandController handController = new HandController(img);
+        img.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return handController.onTouchEvent(event);
+            }
+        });
     }
 
     public void clickPencil(MainImage img, ImageButton view, View penMenu) {
         view.setPressed(true);
         int visible = penMenu.getVisibility();
+        img.setOnTouchListener(null);
         if(visible == View.VISIBLE) {
             penMenu.setVisibility(View.INVISIBLE);
+            img.setDrawingMode(false);
         }else {
             penMenu.setVisibility(View.VISIBLE);
+            img.setDrawingMode(true);
         }
-        img.switchDrawingMode();
     }
 
     public void clickRotation(MainImage img, ImageButton view) {

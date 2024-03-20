@@ -1,5 +1,6 @@
 package com.example.projet_android;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
@@ -18,6 +20,9 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.projet_android.commandes.GestionnaireCommande;
+import com.example.projet_android.commandes.Pivoter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -103,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Mes logs", "No media selected");
                 }
             });
+
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
