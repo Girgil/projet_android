@@ -97,12 +97,16 @@ public class MainImage extends AppCompatImageView {
         drawPaint.setStyle(Paint.Style.STROKE);
     }
 
-    public void setDefaultBitmap() {
+    public void changeImgToDefault() {
         this.setImageBitmap(DEFAULT_BITMAP);
     }
 
-    public void changeDefaultBitmap(Bitmap bitmap) {
+    public static void setDefaultBitmap(Bitmap bitmap) {
         DEFAULT_BITMAP = bitmap;
+    }
+
+    public static Bitmap getDefaultBitmap() {
+        return DEFAULT_BITMAP;
     }
 
     @Override

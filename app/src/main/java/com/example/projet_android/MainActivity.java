@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putParcelable("mainImage", ((BitmapDrawable) this.mainImage.getDrawable()).getBitmap());
+        savedInstanceState.putParcelable("defaultImage", MainImage.getDefaultBitmap());
         float rota = this.mainImage.getRotation();
         savedInstanceState.putFloat("rotation", rota);
         super.onSaveInstanceState(savedInstanceState);
@@ -104,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
     public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         Bitmap img = savedInstanceState.getParcelable("mainImage");
+        Bitmap defaultImg = savedInstanceState.getParcelable("defaultImage");
+        MainImage.setDefaultBitmap(defaultImg);
         float rota = savedInstanceState.getFloat("rotation");
         this.mainImage.setImageBitmap(img);
         this.mainImage.changeRotation('+', (int) rota);

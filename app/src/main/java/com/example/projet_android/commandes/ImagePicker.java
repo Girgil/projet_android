@@ -25,13 +25,13 @@ public class ImagePicker {
                             img.resetRotation();
                             saveImage.execute(img);
                             CommandManager.getInstance().addCommand(saveImage);
-                            img.changeDefaultBitmap(bitmap);
+                            MainImage.setDefaultBitmap(bitmap);
                         } catch (IOException e) {
-                            img.setDefaultBitmap();
+                            img.changeImgToDefault();
                             throw new RuntimeException(e);
                         }
                     } else {
-                        img.setDefaultBitmap();
+                        img.changeImgToDefault();
                     }
                 });
     }

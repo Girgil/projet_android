@@ -1,7 +1,6 @@
 package com.example.projet_android;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -54,7 +53,7 @@ public class MainController {
 
     public void clickEraser(MainImage img) {
         SaveImage saveImage = new SaveImage(img);
-        img.setDefaultBitmap();
+        img.changeImgToDefault();
         saveImage.execute(img);
         CommandManager.getInstance().addCommand(saveImage);
     }
