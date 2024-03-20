@@ -30,7 +30,6 @@
                 android:layout_weight="20"
                 android:contentDescription="@string/file"
                 android:enabled="true"
-                android:onClick="imageChooser"
                 android:scaleType="fitCenter"
                 android:src="@drawable/dossier" />
 
@@ -41,7 +40,6 @@
                 android:layout_weight="20"
                 android:contentDescription="@string/undo"
                 android:enabled="true"
-                android:onClick="annuler"
                 android:scaleType="fitCenter"
                 android:src="@drawable/undo" />
 
@@ -52,7 +50,6 @@
                 android:layout_weight="20"
                 android:contentDescription="@string/redo"
                 android:enabled="true"
-                android:onClick="retablir"
                 android:scaleType="fitCenter"
                 android:src="@drawable/redo" />
 
@@ -63,7 +60,6 @@
                 android:layout_weight="20"
                 android:contentDescription="@string/save"
                 android:enabled="true"
-                android:onClick="enregistrer"
                 android:scaleType="fitCenter"
                 android:src="@drawable/save" />
 
@@ -165,7 +161,6 @@
                 android:checked="true"
                 android:contentDescription="@string/pencil"
                 android:enabled="true"
-                android:onClick="showPenMenu"
                 android:scaleType="fitCenter"
                 android:src="@drawable/crayon" />
 
@@ -196,7 +191,6 @@
                 android:layout_weight="20"
                 android:contentDescription="@string/rotate"
                 android:enabled="true"
-                android:onClick="rotate"
                 android:scaleType="fitCenter"
                 android:src="@drawable/rotation" />
         </LinearLayout>

@@ -15,4 +15,7 @@
     <string name="save_image">Sauvegarder l\'image</string>
     <string name="editing_image">Image editée</string>
     <string name="hand">Main</string>
+    <string name="pen_size_large">Grand</string>
+    <string name="pen_size_medium">Moyen</string>
+    <string name="pen_size_small">Petit</string>
 </resources>

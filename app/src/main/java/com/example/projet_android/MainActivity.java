@@ -7,7 +7,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,29 +19,18 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.projet_android.commandes.GestionnaireCommande;
-import com.example.projet_android.commandes.ICommande;
-import com.example.projet_android.commandes.Pivoter;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton penButton;
-    private SeekBar colorSeekBar;
-    private RadioGroup radioGroup;
     private MainImage mainImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        penButton = findViewById(R.id.pen);
-        colorSeekBar = findViewById(R.id.colorSeekBar);
-        radioGroup = findViewById(R.id.pen_size_group);
+        MainController mainController = new MainController();
+
         mainImage = findViewById(R.id.imageView);
 
-        //mainImage.initBitmap();
+        SeekBar colorSeekBar = findViewById(R.id.colorSeekBar);
         colorSeekBar.getThumb().setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP));
         colorSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -59,21 +47,41 @@ public class MainActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int small = group.findViewById(R.id.pen_size_small).getId();
-                int medium = group.findViewById(R.id.pen_size_medium).getId();
-                int large = group.findViewById(R.id.pen_size_large).getId();
-                Log.d("Mes Logs", "Check: "+checkedId);
-                if(checkedId == small)
-                    mainImage.setPenWidth(5);
-                if(checkedId == medium)
-                    mainImage.setPenWidth(10);
-                if(checkedId == large)
-                    mainImage.setPenWidth(15);
-            }
+        RadioGroup radioGroup = findViewById(R.id.pen_size_group);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int small = group.findViewById(R.id.pen_size_small).getId();
+            int medium = group.findViewById(R.id.pen_size_medium).getId();
+            int large = group.findViewById(R.id.pen_size_large).getId();
+            Log.d("Mes Logs", "Check: "+checkedId);
+            if(checkedId == small)
+                mainImage.setPenWidth(5);
+            if(checkedId == medium)
+                mainImage.setPenWidth(10);
+            if(checkedId == large)
+                mainImage.setPenWidth(15);
         });
+
+        ImageButton openFilesBtn = findViewById(R.id.file);
+        openFilesBtn.setOnClickListener((view) -> mainController.clickOpenFiles((ImageButton) view, pickMedia));
+
+        ImageButton undoBtn = findViewById(R.id.undo);
+        undoBtn.setOnClickListener((view) -> mainController.clickUndo(mainImage));
+
+        ImageButton redoBtn = findViewById(R.id.redo);
+        redoBtn.setOnClickListener((view) -> mainController.clickRedo(mainImage));
+
+        ImageButton saveBtn = findViewById(R.id.save);
+        saveBtn.setOnClickListener((view) -> mainController.clickSave(mainImage));
+
+        View pencilMenu = findViewById(R.id.pen_menu);
+        ImageButton handBtn = findViewById(R.id.hand);
+        handBtn.setOnClickListener((view) -> mainController.clickHand(mainImage, (ImageButton) view, pencilMenu));
+
+        ImageButton pencilBtn = findViewById(R.id.pen);
+        pencilBtn.setOnClickListener((view) -> mainController.clickPencil(mainImage, (ImageButton) view, pencilMenu));
+
+        ImageButton rotateBtn = findViewById(R.id.rotate);
+        rotateBtn.setOnClickListener((view) -> mainController.clickRotation(mainImage, (ImageButton) view));
     }
 
     private int getColorFromSeekBar(int progress) {
@@ -95,57 +103,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Mes logs", "No media selected");
                 }
             });
-
-    public void imageChooser(View view) {
-
-        view.setPressed(true);
-        // create an instance of the
-        // intent of the type image
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        pickMedia.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build());
-    }
-
-    public void pivoterControleur(View view) {
-        view.setPressed(true);
-        Pivoter pivoter = new Pivoter();
-        pivoter.executer(mainImage);
-        GestionnaireCommande.getInstance().addCommande(pivoter);
-    }
-
-    public void annulerControleur(View view) {
-//        item.setChecked(true);
-        GestionnaireCommande.getInstance().undoLastCommand(mainImage);
-    }
-
-    public void retablirControleur(View view) {
-//        item.setChecked(true);
-        view.setPressed(true);
-        GestionnaireCommande.getInstance().redoCommand(mainImage);
-    }
-
-    public void enregistrer(View view) {
-        mainImage.save();
-    }
-
-    public void eraserMode(View view){
-        //Log.d("Mes Logs", "Effaceur");
-        mainImage.setPenColor(Color.WHITE);
-    }
-
-    public void showPenMenu(View view){
-        View vue = findViewById(R.id.pen_menu);
-        int visible = vue.getVisibility();
-        if(visible == View.VISIBLE) {
-            vue.setVisibility(View.INVISIBLE);
-        }else {
-            vue.setVisibility(View.VISIBLE);
-        }
-        mainImage.switchDrawingMode();
-    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

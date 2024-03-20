@@ -1,9 +1,5 @@
 package com.example.projet_android.commandes;
 
-import android.os.Parcel;
-
-import androidx.annotation.NonNull;
-
 import com.example.projet_android.MainImage;
 
 public class Pivoter implements ICommande {
