@@ -15,6 +15,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.example.projet_android.commandes.Dessiner;
+import com.example.projet_android.commandes.GestionnaireCommande;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -94,10 +97,10 @@ public class MainImage extends AppCompatImageView {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!drawingEnabled) return false;
         this.setDrawingCacheEnabled(true);
         Bitmap bitmap = Bitmap.createBitmap(this.getDrawingCache());
         this.setDrawingCacheEnabled(false);
-        if (!drawingEnabled) return false;
         float x = event.getX();
         float y = event.getY();
         drawPaint.setColor(getPenColor());
@@ -115,6 +118,9 @@ public class MainImage extends AppCompatImageView {
             case MotionEvent.ACTION_UP:
                 // Rien à faire à la fin du tracé
                 drawingPath.reset();
+                Dessiner dessin = new Dessiner();
+                dessin.executer(this);
+                GestionnaireCommande.getInstance().addCommande(dessin);
                 break;
         }
 
@@ -143,6 +149,29 @@ public class MainImage extends AppCompatImageView {
 
     public void setPenWidth(int penWidth){
         this.penWidth = penWidth;
+    }
+    public Memento sauvegarder(){
+        this.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(this.getDrawingCache());
+        this.setDrawingCacheEnabled(false);
+        this.setImageBitmap(bitmap);
+        return new Memento(bitmap);
+    }
+    public void restaurer(Memento memento){
+        //return memento.getImage();
+        Log.d("Mes Logs", "Restaurer");
+        this.setImageBitmap(memento.getImage());
+    }
+    public class Memento{
+        private Bitmap image;
+        public Memento(Bitmap image){
+            Log.d("Mes Logs", "Création memento");
+            this.image = image;
+        }
+
+        public Bitmap getImage() {
+            return this.image;
+        }
     }
 }
 

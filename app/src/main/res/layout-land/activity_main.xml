@@ -75,12 +75,12 @@
             android:layout_height="match_parent"
             android:layout_weight="90"
             android:contentDescription="@string/editing_image"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/image_default" />
 
         <LinearLayout
             android:id="@+id/pen_menu"
-            android:layout_width="0dp"
+            android:layout_width="20dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:gravity="top"
@@ -130,6 +130,14 @@
                 android:layout_height="match_parent"
                 android:max="100"
                 android:progress="0" />
+
+            <ImageButton
+                android:id="@+id/eraser"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:onClick="eraserMode"
+                android:scaleType="fitCenter"
+                android:src="@drawable/gomme" />
         </LinearLayout>
 
 

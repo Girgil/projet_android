@@ -1,7 +1,6 @@
 package com.example.projet_android;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -12,7 +11,6 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
@@ -34,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton penButton;
     private SeekBar colorSeekBar;
     private RadioGroup radioGroup;
-    private View colorPreview;
-    private int penColor = Color.RED;
-    private int drawWidth = 10;
     private MainImage mainImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         radioGroup = findViewById(R.id.pen_size_group);
         mainImage = findViewById(R.id.imageView);
 
+        //mainImage.initBitmap();
+        colorSeekBar.getThumb().setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP));
         colorSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -134,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
         mainImage.save();
     }
 
+    public void eraserMode(View view){
+        //Log.d("Mes Logs", "Effaceur");
+        mainImage.setPenColor(Color.WHITE);
+    }
+
     public void showPenMenu(View view){
         View vue = findViewById(R.id.pen_menu);
         int visible = vue.getVisibility();
@@ -143,12 +145,6 @@ public class MainActivity extends AppCompatActivity {
             vue.setVisibility(View.VISIBLE);
         }
         mainImage.switchDrawingMode();
-    }
-
-    private void deactivateDrawingMode() {
-        // Supprimer les écouteurs d'événements de dessin
-        ImageView imageView = findViewById(R.id.imageView);
-        imageView.setOnTouchListener(null);
     }
 
     @Override
@@ -172,5 +168,4 @@ public class MainActivity extends AppCompatActivity {
         this.mainImage.setImageBitmap(img);
         this.mainImage.changeRotation('+', (int) rota);
     }
-
 }
