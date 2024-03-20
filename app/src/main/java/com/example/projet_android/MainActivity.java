@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -22,7 +23,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projet_android.commandes.GestionnaireCommande;
+import com.example.projet_android.commandes.ICommande;
 import com.example.projet_android.commandes.Pivoter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -107,31 +112,26 @@ public class MainActivity extends AppCompatActivity {
                 .build());
     }
 
-    public void rotate(View view) {
+    public void pivoterControleur(View view) {
         view.setPressed(true);
-        MainImage img = findViewById(R.id.imageView);
-        Pivoter pivoter = new Pivoter(img);
-        pivoter.executer();
+        Pivoter pivoter = new Pivoter();
+        pivoter.executer(mainImage);
         GestionnaireCommande.getInstance().addCommande(pivoter);
-        Log.d("Mes logs", GestionnaireCommande.getInstance().toString());
     }
 
-    public void annuler(View view) {
+    public void annulerControleur(View view) {
 //        item.setChecked(true);
-        GestionnaireCommande.getInstance().undoLastCommand();
-        Log.d("Mes logs", GestionnaireCommande.getInstance().toString());
+        GestionnaireCommande.getInstance().undoLastCommand(mainImage);
     }
 
-    public void retablir(View view) {
+    public void retablirControleur(View view) {
 //        item.setChecked(true);
         view.setPressed(true);
-        GestionnaireCommande.getInstance().redoCommand();
-        Log.d("Mes logs", GestionnaireCommande.getInstance().toString());
+        GestionnaireCommande.getInstance().redoCommand(mainImage);
     }
 
     public void enregistrer(View view) {
-        MainImage img = findViewById(R.id.imageView);
-        img.save();
+        mainImage.save();
     }
 
     public void showPenMenu(View view){

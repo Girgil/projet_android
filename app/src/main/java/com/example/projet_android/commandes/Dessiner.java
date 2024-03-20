@@ -1,28 +1,23 @@
 package com.example.projet_android.commandes;
 
-import android.view.View;
+import com.example.projet_android.MainImage;
 
 public class Dessiner implements ICommande{
 
-    private View view;
-    public Dessiner(View view) {
-        this.view = view;
+
+    @Override
+    public void executer(MainImage img) {
+
     }
 
     @Override
-    public void executer() {
-        float rota = this.view.getRotation();
-        this.view.setRotation(rota+90);
+    public void annuler(MainImage img) {
+
     }
 
     @Override
-    public void annuler() {
-        float rota = this.view.getRotation();
-        this.view.setRotation(rota-90);
+    public void retablir(MainImage img) {
+        this.executer(img);
     }
 
-    @Override
-    public void retablir() {
-        this.executer();
-    }
 }

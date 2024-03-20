@@ -1,27 +1,25 @@
 package com.example.projet_android.commandes;
 
+import android.os.Parcel;
+
+import androidx.annotation.NonNull;
+
 import com.example.projet_android.MainImage;
 
 public class Pivoter implements ICommande {
 
-    private final MainImage view;
-
-    public Pivoter(MainImage view) {
-        this.view = view;
+    @Override
+    public void executer(MainImage img) {
+        img.changeRotation('+', 90);
     }
 
     @Override
-    public void executer() {
-        this.view.changeRotation('+', 90);
+    public void annuler(MainImage img) {
+        img.changeRotation('-', 90);
     }
 
     @Override
-    public void annuler() {
-        this.view.changeRotation('-', 90);
-    }
-
-    @Override
-    public void retablir() {
-        this.executer();
+    public void retablir(MainImage img) {
+        this.executer(img);
     }
 }

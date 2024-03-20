@@ -1,5 +1,7 @@
 package com.example.projet_android.commandes;
 
+import com.example.projet_android.MainImage;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,18 +48,18 @@ public class GestionnaireCommande {
         return null;
     }
 
-    public void undoLastCommand() {
+    public void undoLastCommand(MainImage img) {
         ICommande cmd = this.getLastCommand(this.getHistoriqueCmd());
         if (cmd != null) {
-            cmd.annuler();
+            cmd.annuler(img);
             this.addCommandeAnnulee(cmd);
         }
     }
 
-    public void redoCommand() {
+    public void redoCommand(MainImage img) {
         ICommande cmd = this.getLastCommand(this.historiqueCmdAnnulees);
         if (cmd != null) {
-            cmd.retablir();
+            cmd.retablir(img);
             this.addCommande(cmd);
         }
     }

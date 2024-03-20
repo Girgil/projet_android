@@ -41,7 +41,7 @@
                 android:scaleType="fitCenter"
                 android:enabled="true"
                 android:src="@drawable/undo"
-                android:onClick="annuler"
+                android:onClick="annulerControleur"
                 android:contentDescription="@string/undo" />
             <ImageButton
                 android:id="@+id/redo"
@@ -51,7 +51,7 @@
                 android:scaleType="fitCenter"
                 android:enabled="true"
                 android:src="@drawable/redo"
-                android:onClick="retablir"
+                android:onClick="retablirControleur"
                 android:contentDescription="@string/redo" />
             <ImageButton
                 android:id="@+id/save"
@@ -186,7 +186,7 @@
                 android:scaleType="fitCenter"
                 android:enabled="true"
                 android:src="@drawable/rotation"
-                android:onClick="rotate"
+                android:onClick="pivoterControleur"
                 android:contentDescription="@string/rotate" />
         </LinearLayout>
 

@@ -1,11 +1,13 @@
 package com.example.projet_android.commandes;
 
+import com.example.projet_android.MainImage;
+
 public interface ICommande {
 
 
-    void executer();
+    void executer(MainImage img);
 
-    void annuler();
+    void annuler(MainImage img);
 
-    void retablir();
+    void retablir(MainImage img);
 }
